@@ -130,7 +130,7 @@ button.active{outline:4px solid var(--orange);}
 
 /* ===== OVERLAY ===== */
 .overlay{
-    position:absolute;
+    position:fixed;
     inset:0;
     background:rgba(0,0,0,.3);
     display:none;
@@ -138,20 +138,25 @@ button.active{outline:4px solid var(--orange);}
 }
 .overlay.show{display:block}
 
-/* ===== CALCULATOR PANEL ===== */
+/* ===== CALCULATOR PANEL (BOTTOM) ===== */
 .calc-panel{
-    position:absolute;
-    top:0;
-    right:-320px;
-    width:320px;
-    height:100%;
+    position:fixed;
+    bottom:-400px;  /* hidden initially */
+    left:50%;
+    transform:translateX(-50%);
+    width:100%;
+    max-width:400px;
+    height:400px;
     background:#fff;
     padding:15px;
-    border-left:1px solid #eee;
+    border-radius:15px 15px 0 0;
+    box-shadow:0 -5px 20px rgba(0,0,0,.2);
     transition:.3s ease;
     z-index:10;
 }
-.calc-panel.open{right:0}
+.calc-panel.open{
+    bottom:0;
+}
 
 /* ===== CALC HEADER ===== */
 .calc-header{
@@ -164,21 +169,6 @@ button.active{outline:4px solid var(--orange);}
     background:#e74c3c;
     color:#fff;
     padding:6px 10px;
-}
-
-/* SLIDE BUTTON */
-.calc-slide-btn{
-    position:absolute;
-    top:50%;
-    right:0;
-    transform:translateY(-50%);
-    background:var(--orange);
-    color:#fff;
-    padding:14px 8px;
-    border-radius:10px 0 0 10px;
-    cursor:pointer;
-    writing-mode:vertical-rl;
-    font-size:14px;
 }
 
 /* CALCULATOR */
@@ -215,17 +205,25 @@ input[type=number] {
     -moz-appearance: textfield; /* Firefox */
 }
 
+/* ===== SLIDE BUTTON BOTTOM ===== */
+.calc-slide-btn{
+    position:fixed;
+    bottom:10px;
+    left:50%;
+    transform:translateX(-50%);
+    background:var(--orange);
+    color:#fff;
+    padding:10px 20px;
+    border-radius:25px;
+    cursor:pointer;
+    font-weight:bold;
+    box-shadow:0 4px 10px rgba(0,0,0,.2);
+}
+
 /* ===== MOBILE ===== */
 @media(max-width:768px){
     .container{border-radius:0;padding:10px;}
-    .calc-panel{width:100%;right:-100%}
-    .calc-panel.open{right:0}
-    .calc-slide-btn{
-        writing-mode:horizontal-tb;
-        bottom:0;top:auto;
-        right:50%;transform:translateX(50%);
-        border-radius:10px 10px 0 0;
-    }
+    .calc-panel{width:100%;max-width:none;height:350px;}
     .day{height:50px;}
     button{font-size:14px;padding:10px 14px;}
 }
@@ -256,7 +254,7 @@ input[type=number] {
 
     <div class="calendar">
         <div class="days-header">
-            <div>S</div><div>M</div><div>T</div><div>W</div><div>T</div><div>F</div><div>S</div>
+            <div>S</div><div>M</div><div>T</div><div>W</div><div>TH</div><div>F</div><div>S</div>
         </div>
         <div class="days" id="days"></div>
     </div>
@@ -273,7 +271,7 @@ input[type=number] {
 <!-- OVERLAY -->
 <div class="overlay" id="overlay" onclick="toggleCalc()"></div>
 
-<!-- CALCULATOR -->
+<!-- CALCULATOR PANEL -->
 <div class="calc-panel" id="calcPanel">
     <div class="calc-header">
         <strong>Calculator</strong>
@@ -312,6 +310,7 @@ input[type=number] {
     </div>
 </div>
 
+<!-- SLIDE BUTTON -->
 <div class="calc-slide-btn" onclick="toggleCalc()">CALCULATOR</div>
 
 <script>
