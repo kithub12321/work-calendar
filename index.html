@@ -8,224 +8,229 @@
 <style>
 :root{
     --orange:#FF6B4A;
-    --bg:#F0F2F5;
+    --bg:#F4F6F8;
+    --card:#FFFFFF;
+    --text:#2C2C2C;
 }
-*{box-sizing:border-box;font-family:Segoe UI,sans-serif}
+
+*{
+    box-sizing:border-box;
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+}
 
 body{
-    background:#AAB2BD;
+    margin:0;
+    background:#E1E6EB;
     display:flex;
     justify-content:center;
-    align-items:flex-start;
-    min-height:100vh;
-    margin:0;
-    padding:20px;
+    padding:12px;
 }
 
 /* ===== CONTAINER ===== */
 .container{
     width:100%;
-    max-width:1100px;
-    background:#fff;
-    border-radius:25px;
-    display:flex;
-    flex-direction:column;
-    position:relative;
-    overflow:hidden;
-    box-shadow:0 20px 50px rgba(0,0,0,.2);
-    padding:20px;
-    min-height:850px; /* fixed height so calendar doesn't jump */
+    max-width:420px;
+    background:var(--card);
+    border-radius:24px;
+    padding:16px 16px 120px; /* EXTRA bottom space for calculator */
+    box-shadow:0 15px 40px rgba(0,0,0,.18);
 }
 
-/* ===== CONTROLS ===== */
+/* ===== MONTH NAV ===== */
 .controls{
     display:flex;
-    gap:10px;
-    margin-bottom:15px;
+    justify-content:space-between;
     align-items:center;
-    justify-content:center;
-}
-button{
-    padding:12px 20px;
-    border-radius:12px;
-    border:none;
-    font-weight:600;
-    cursor:pointer;
-    font-size:16px;
-    transition:0.2s;
-}
-button:hover{transform:scale(1.05);}
-#monthYear{
-    min-width:160px;
-    text-align:center;
-    font-weight:bold;
-    font-size:20px;
+    margin-bottom:12px;
 }
 
-/* Button colors */
+.controls button{
+    width:42px;
+    height:42px;
+    border-radius:50%;
+    border:none;
+    background:var(--bg);
+    font-size:20px;
+    font-weight:bold;
+}
+
+#monthYear{
+    font-size:18px;
+    font-weight:700;
+}
+
+/* ===== BUTTONS ===== */
+.mark-buttons,
+.clear-buttons{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:10px;
+    margin-bottom:12px;
+}
+
+button{
+    border:none;
+    padding:14px;
+    border-radius:14px;
+    font-weight:600;
+    font-size:14px;
+    cursor:pointer;
+}
+
+button.active{
+    outline:3px solid var(--orange);
+}
+
 .workBtn{background:#2ecc71;color:#fff;}
-.halfBtn{background:#f1c40f;}
+.halfBtn{background:#f1c40f;color:#fff;}
 .offBtn{background:#e74c3c;color:#fff;}
+.clearDay{background:#95a5a6;color:#fff;}
 .clearMonth{background:#3498db;color:#fff;}
 .clearAll{background:#555;color:#fff;}
-.clearDay{background:#888;color:#fff;}
-
-/* Active highlight */
-button.active{outline:4px solid var(--orange);}
-
-/* Button groups */
-.mark-buttons,.clear-buttons{
-    display:flex;
-    gap:10px;
-    margin-bottom:15px;
-    justify-content:center;
-}
 
 /* ===== CALENDAR ===== */
 .calendar{
-    background:#fff;
-    border-radius:20px;
-    padding:15px;
+    background:var(--bg);
+    border-radius:18px;
+    padding:10px;
 }
+
 .days-header{
     display:grid;
     grid-template-columns:repeat(7,1fr);
     text-align:center;
-    font-weight:bold;
+    font-size:13px;
+    font-weight:700;
     color:var(--orange);
-    font-size:16px;
+    margin-bottom:6px;
 }
+
 .days{
     display:grid;
     grid-template-columns:repeat(7,1fr);
     gap:6px;
-    height: calc(6 * 70px + 5 * 6px); /* fixed for 6 weeks */
 }
+
 .day{
-    background:var(--bg);
-    height:70px;
+    height:46px;
     border-radius:12px;
+    background:#fff;
     display:flex;
-    align-items:center;
     justify-content:center;
+    align-items:center;
     font-weight:600;
-    cursor:pointer;
-    transition:0.2s;
-    font-size:16px;
 }
-.day:hover{transform:scale(1.05);}
+
 .day.work{background:#2ecc71;color:#fff;}
 .day.half{background:#f1c40f;color:#fff;}
 .day.off{background:#e74c3c;color:#fff;}
 
-/* ===== SUMMARY ===== */
+/* ===== SALARY SUMMARY (FIXED UX) ===== */
 .summary{
-    margin-top:15px;
-    background:#fff;
-    border-radius:15px;
-    padding:15px;
+    margin-top:16px;
+    background:linear-gradient(135deg,#FF6B4A,#FF8C6A);
+    color:#fff;
+    border-radius:22px;
+    padding:18px;
     text-align:center;
-    font-size:16px;
+    box-shadow:0 10px 25px rgba(0,0,0,.25);
+}
+
+.summary .counts{
+    font-size:14px;
+    opacity:.95;
+}
+
+#salaryTotal{
+    font-size:28px;
+    font-weight:800;
+    margin-top:6px;
+    display:block;
+}
+
+/* ===== CALCULATOR BUTTON ===== */
+.calc-slide-btn{
+    position:fixed;
+    bottom:20px;
+    left:50%;
+    transform:translateX(-50%);
+    background:var(--orange);
+    color:#fff;
+    padding:14px 28px;
+    border-radius:30px;
+    font-weight:700;
+    box-shadow:0 10px 25px rgba(0,0,0,.3);
+    z-index:20;
 }
 
 /* ===== OVERLAY ===== */
 .overlay{
     position:fixed;
     inset:0;
-    background:rgba(0,0,0,.3);
+    background:rgba(0,0,0,.45);
     display:none;
-    z-index:9;
+    z-index:30;
 }
 .overlay.show{display:block}
 
-/* ===== CALCULATOR PANEL (BOTTOM) ===== */
+/* ===== CALCULATOR PANEL ===== */
 .calc-panel{
     position:fixed;
-    bottom:-400px;  /* hidden initially */
-    left:50%;
-    transform:translateX(-50%);
+    bottom:-460px;
+    left:0;
     width:100%;
-    max-width:400px;
-    height:400px;
     background:#fff;
-    padding:15px;
-    border-radius:15px 15px 0 0;
-    box-shadow:0 -5px 20px rgba(0,0,0,.2);
-    transition:.3s ease;
-    z-index:10;
-}
-.calc-panel.open{
-    bottom:0;
+    border-radius:26px 26px 0 0;
+    padding:16px;
+    z-index:40;
+    transition:.35s ease;
 }
 
-/* ===== CALC HEADER ===== */
+.calc-panel.open{bottom:0;}
+
 .calc-header{
     display:flex;
     justify-content:space-between;
     align-items:center;
     margin-bottom:10px;
+    font-weight:700;
 }
+
 .calc-header button{
     background:#e74c3c;
     color:#fff;
-    padding:6px 10px;
+    padding:6px 12px;
+    border-radius:10px;
 }
 
-/* CALCULATOR */
 .display{
     background:var(--bg);
-    padding:15px;
+    padding:14px;
+    border-radius:12px;
     font-size:22px;
     text-align:right;
-    border-radius:10px;
     margin-bottom:12px;
 }
+
 .calc-grid{
     display:grid;
     grid-template-columns:repeat(4,1fr);
     gap:8px;
 }
-.calc-grid button{height:42px;font-size:16px}
-.orange{background:var(--orange);color:#fff}
+
+.calc-grid button{
+    height:44px;
+    border-radius:12px;
+}
+
+.orange{background:var(--orange);color:#fff;}
+
 .rate-input input{
+    margin-top:12px;
     width:100%;
-    margin-top:10px;
-    padding:10px;
-    border-radius:8px;
+    padding:12px;
+    border-radius:12px;
     border:1px solid #ccc;
-}
-
-/* Remove number input arrows */
-input[type=number]::-webkit-outer-spin-button,
-input[type=number]::-webkit-inner-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
-}
-input[type=number] {
-    -moz-appearance: textfield; /* Firefox */
-}
-
-/* ===== SLIDE BUTTON BOTTOM ===== */
-.calc-slide-btn{
-    position:fixed;
-    bottom:10px;
-    left:50%;
-    transform:translateX(-50%);
-    background:var(--orange);
-    color:#fff;
-    padding:10px 20px;
-    border-radius:25px;
-    cursor:pointer;
-    font-weight:bold;
-    box-shadow:0 4px 10px rgba(0,0,0,.2);
-}
-
-/* ===== MOBILE ===== */
-@media(max-width:768px){
-    .container{border-radius:0;padding:10px;}
-    .calc-panel{width:100%;max-width:none;height:350px;}
-    .day{height:50px;}
-    button{font-size:14px;padding:10px 14px;}
 }
 </style>
 </head>
@@ -241,10 +246,10 @@ input[type=number] {
     </div>
 
     <div class="mark-buttons">
-        <button class="workBtn" onclick="setMode('work', this)">Work</button>
-        <button class="halfBtn" onclick="setMode('half', this)">Half</button>
-        <button class="offBtn" onclick="setMode('off', this)">Off</button>
-        <button class="clearDay" onclick="setMode('clearDay', this)">Clear Day</button>
+        <button class="workBtn" onclick="setMode('work',this)">Work</button>
+        <button class="halfBtn" onclick="setMode('half',this)">Half</button>
+        <button class="offBtn" onclick="setMode('off',this)">Off</button>
+        <button class="clearDay" onclick="setMode('clearDay',this)">Clear Day</button>
     </div>
 
     <div class="clear-buttons">
@@ -254,27 +259,27 @@ input[type=number] {
 
     <div class="calendar">
         <div class="days-header">
-            <div>S</div><div>M</div><div>T</div><div>W</div><div>TH</div><div>F</div><div>S</div>
+            <div>S</div><div>M</div><div>T</div><div>W</div><div>T</div><div>F</div><div>S</div>
         </div>
         <div class="days" id="days"></div>
     </div>
 
     <div class="summary">
-        Work: <b id="workCount">0</b> |
-        Half: <b id="halfCount">0</b> |
-        Off: <b id="offCount">0</b><br><br>
-        Salary: ₱ <b id="salaryTotal">0.00</b>
+        <div class="counts">
+            Work: <b id="workCount">0</b> |
+            Half: <b id="halfCount">0</b> |
+            Off: <b id="offCount">0</b>
+        </div>
+        <span id="salaryTotal">₱ 0.00</span>
     </div>
 
 </div>
 
-<!-- OVERLAY -->
 <div class="overlay" id="overlay" onclick="toggleCalc()"></div>
 
-<!-- CALCULATOR PANEL -->
 <div class="calc-panel" id="calcPanel">
     <div class="calc-header">
-        <strong>Calculator</strong>
+        <span>Calculator</span>
         <button onclick="toggleCalc()">✕</button>
     </div>
 
@@ -306,15 +311,16 @@ input[type=number] {
     </div>
 
     <div class="rate-input">
-        <input type="number" id="rateInput" placeholder="Daily Rate ₱" min="0" step="any" oninput="computeSalary()" onkeydown="return isNumberKey(event)">
+        <input type="number" id="rateInput" placeholder="Daily Rate ₱" oninput="computeSalary()">
     </div>
 </div>
 
-<!-- SLIDE BUTTON -->
 <div class="calc-slide-btn" onclick="toggleCalc()">CALCULATOR</div>
 
 <script>
 const months=["January","February","March","April","May","June","July","August","September","October","November","December"];
+let currentMonth=new Date().getMonth();
+let currentYear=new Date().getFullYear();
 let mode="work";
 let marks=JSON.parse(localStorage.getItem("marks"))||{};
 
@@ -324,119 +330,78 @@ const halfCount=document.getElementById("halfCount");
 const offCount=document.getElementById("offCount");
 const salaryTotal=document.getElementById("salaryTotal");
 const rateInput=document.getElementById("rateInput");
-const monthYear=document.getElementById("monthYear");
-const prevBtn=document.getElementById("prevMonth");
-const nextBtn=document.getElementById("nextMonth");
 
-let currentMonth = new Date().getMonth();
-let currentYear = new Date().getFullYear();
+document.getElementById("prevMonth").onclick=()=>{currentMonth--;if(currentMonth<0){currentMonth=11;currentYear--;}render();}
+document.getElementById("nextMonth").onclick=()=>{currentMonth++;if(currentMonth>11){currentMonth=0;currentYear++;}render();}
 
-// Update month-year display
-function updateMonthYear(){
-    monthYear.innerText = `${months[currentMonth]} ${currentYear}`;
-    render();
+function setMode(m,btn){
+    mode=m;
+    document.querySelectorAll(".mark-buttons button").forEach(b=>b.classList.remove("active"));
+    btn.classList.add("active");
 }
 
-// Navigate months
-prevBtn.onclick = ()=>{
-    currentMonth--;
-    if(currentMonth<0){currentMonth=11; currentYear--;}
-    updateMonthYear();
-}
-nextBtn.onclick = ()=>{
-    currentMonth++;
-    if(currentMonth>11){currentMonth=0; currentYear++;}
-    updateMonthYear();
-}
-
-// Set mode and highlight button
-function setMode(m, btn){
-    mode = m;
-    document.querySelectorAll('.mark-buttons button').forEach(b=>b.classList.remove('active'));
-    if(btn) btn.classList.add('active');
-}
-
-// Render calendar
 function render(){
+    document.getElementById("monthYear").innerText=`${months[currentMonth]} ${currentYear}`;
     daysDiv.innerHTML="";
     let first=new Date(currentYear,currentMonth,1).getDay();
     let total=new Date(currentYear,currentMonth+1,0).getDate();
 
-    for(let i=0;i<first;i++) daysDiv.appendChild(document.createElement("div"));
+    for(let i=0;i<first;i++)daysDiv.appendChild(document.createElement("div"));
 
-    for(let d=1; d<=total; d++){
+    for(let d=1;d<=total;d++){
         let div=document.createElement("div");
         div.className="day";
         div.innerText=d;
         let key=`${currentYear}-${currentMonth}-${d}`;
-        if(marks[key]) div.classList.add(marks[key]);
-
+        if(marks[key])div.classList.add(marks[key]);
         div.onclick=()=>{
-            if(mode==='clearDay'){ delete marks[key]; }
-            else { marks[key]=mode; }
+            if(mode==="clearDay")delete marks[key];
+            else marks[key]=mode;
             localStorage.setItem("marks",JSON.stringify(marks));
             render();computeSalary();
-        };
+        }
         daysDiv.appendChild(div);
     }
-
-    // fill remaining cells to always make 6 rows
-    let remaining = 42 - (first + total);
-    for(let i=0;i<remaining;i++) daysDiv.appendChild(document.createElement("div"));
 }
 
-// Compute salary
 function computeSalary(){
-    let rate=+rateInput.value||0,work=0,half=0,off=0,total=0;
+    let rate=+rateInput.value||0,w=0,h=0,o=0,total=0;
     for(let k in marks){
-        if(marks[k]=="work"){work++;total+=rate}
-        if(marks[k]=="half"){half++;total+=rate/2}
-        if(marks[k]=="off"){off++}
+        if(marks[k]=="work"){w++;total+=rate}
+        if(marks[k]=="half"){h++;total+=rate/2}
+        if(marks[k]=="off"){o++}
     }
-    workCount.innerText=work;
-    halfCount.innerText=half;
-    offCount.innerText=off;
-    salaryTotal.innerText=total.toFixed(2);
+    workCount.innerText=w;
+    halfCount.innerText=h;
+    offCount.innerText=o;
+    salaryTotal.innerText=`₱ ${total.toFixed(2)}`;
 }
 
-// Clear functions
 function clearMonth(){
-    for(let k in marks) if(k.startsWith(`${currentYear}-${currentMonth}-`)) delete marks[k];
+    for(let k in marks)if(k.startsWith(`${currentYear}-${currentMonth}-`))delete marks[k];
     localStorage.setItem("marks",JSON.stringify(marks));
     render();computeSalary();
 }
 
 function clearAll(){
     if(confirm("Clear all data?")){
-        marks={};
-        localStorage.clear();
+        marks={};localStorage.clear();
         render();computeSalary();
     }
 }
 
-/* Calculator */
 let disp=document.getElementById("display");
 function add(v){disp.innerText=disp.innerText=="0"?v:disp.innerText+v}
 function clr(){disp.innerText="0"}
 function del(){disp.innerText=disp.innerText.length>1?disp.innerText.slice(0,-1):"0"}
 function calc(){try{disp.innerText=eval(disp.innerText)}catch{disp.innerText="Err"}}
 
-/* Toggle calculator */
 function toggleCalc(){
     document.getElementById("calcPanel").classList.toggle("open");
     document.getElementById("overlay").classList.toggle("show");
 }
 
-// Allow only numeric input for daily rate
-function isNumberKey(evt) {
-    let charCode = evt.which ? evt.which : evt.keyCode;
-    if ([8,9,37,38,39,40,46].includes(charCode)) return true;
-    if (charCode < 48 || charCode > 57) return false;
-    return true;
-}
-
-updateMonthYear();
-computeSalary();
+render();computeSalary();
 </script>
 
 </body>
